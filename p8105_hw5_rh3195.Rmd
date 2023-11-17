@@ -76,5 +76,43 @@ broom::tidy(baltimore_test) %>%
   knitr::kable(digits = 3)
 ```
 
+## Problem 2
+
+### Import and combine data
+
+```{r}
+study_df =
+  tibble(
+    files = list.files("./data/study_data/"),
+    path = str_c("./data/study_data/", files)) %>% 
+  mutate(data = map(path, read_csv)) %>% 
+  unnest() %>% 
+  mutate(files=str_replace(files,".csv",""),
+         group = case_when(
+      stringr::str_detect(files, "con") ~ "control",
+      stringr::str_detect(files, "exp") ~ "experimental")) %>% 
+  pivot_longer(week_1 : week_8,
+               names_to = "week",
+               values_to = "value",
+               names_prefix = "week_") %>% 
+  mutate(week = as.numeric(week)) %>% 
+  select(!path)
+```
+
+### Make spaghetti plot
+
+```{r}
+spaghetti_plot =
+  study_df %>% 
+  ggplot(aes(x = week, y = value, group = files, color = group)) +
+    geom_line() +
+  labs(title = "Observations Over Time",
+       x = "Week",
+       y = "Value")
+
+print(spaghetti_plot)
+```
+
+> Comment
 
 
