@@ -113,7 +113,7 @@ spaghetti_plot =
 print(spaghetti_plot)
 ```
 
-> Comment
+> The spaghetti plot indicates that the experimental groups have relative higher values than control groups. During the study period, the values of experimental groups is increasing while the control groups do not have significant change.
 
 ## Problem 3
 
